@@ -9,19 +9,19 @@ import {v4 as uuidv4} from 'uuid';
 const initialJobList = [
   {
     id:uuidv4(),
+    title:"Frontend Developer",
+  },
+  {
+    uniqueId:uuidv4(),
+    title:"Backend Developer",
+  },
+  {
+    uniqueId:uuidv4(),
+    title:"Full stack Developer",
+  },
+  {
+    uniqueId:uuidv4(),
     title:"Software Developer",
-  },
-  {
-    uniqueId:uuidv4(),
-    title:"Software Developer5",
-  },
-  {
-    uniqueId:uuidv4(),
-    title:"Software Developer4",
-  },
-  {
-    uniqueId:uuidv4(),
-    title:"Software Developer3",
   },
 
 ]
