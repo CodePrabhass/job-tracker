@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import './App.css'
 import {v4 as uuidv4} from 'uuid';
 
@@ -6,31 +6,19 @@ import {v4 as uuidv4} from 'uuid';
  * A React component that creates a job tracker application
  * Allows users to add and display job titles
  */
-const initialJobList = [
-  {
-    id:uuidv4(),
-    title:"Frontend Developer",
-  },
-  {
-    uniqueId:uuidv4(),
-    title:"Backend Developer",
-  },
-  {
-    uniqueId:uuidv4(),
-    title:"Full stack Developer",
-  },
-  {
-    uniqueId:uuidv4(),
-    title:"Software Developer",
-  },
-
-]
 const App=()=>{
 
   const [job,setJob] = useState(""); 
-  const [jobsList,setJobsList] = useState(initialJobList);
+  const [jobsList,setJobsList] = useState(()=>{
+    const storedJobs = localStorage.getItem("jobs")
+    return storedJobs?(JSON.parse(storedJobs)):[]
+  });
   const [editingId,setEditingId] = useState(null);
   const [editingText,setEditingText] =useState("")
+
+  useEffect(()=>{
+    localStorage.setItem("jobs",JSON.stringify(jobsList))
+  },[jobsList])
 
   const addJob = () => {
     if(job.trim() !== ""){
@@ -44,26 +32,21 @@ const App=()=>{
     setJobsList(filteredJobsList);
   }
 
-    // Start editing
-    const startEdit = (job) => {
-      setEditingId(job.uniqueId);
-      setEditingText(job.title);
-    };
-  
-    // Save updated job
-    const updateJob = (id) => {
-      const updatedJobs = jobsList.map((job) =>
-        job.uniqueId === id
-          ? { ...job, title: editingText }
-          : job
-      );
-  
-      setJobsList(updatedJobs);
-      setEditingId(null);
-      setEditingText("");
-    };
-  
+  const updateJob = (id) => {
+    const updatedJob = jobsList.map((eachJob)=>
+    eachJob.uniqueId === id
+     ? {...eachJob,title:editingText}
+     :eachJob
+    )
+    setJobsList(updatedJob)
+    setEditingId(null)
+    setEditingText("")
+  }
 
+  const startEdit = (eachJob) => {
+    setEditingId(eachJob.uniqueId)
+    setEditingText(eachJob.title)
+  }
   return (
     <div className="App">
       <h1>JOB TRACKER App</h1>
@@ -75,40 +58,27 @@ const App=()=>{
         onChange={(event) => setJob(event.target.value)}
       />
 
-      <button onClick={addJob}>Add job</button>
+      <button onClick={addJob} className="button">Add job</button>
 
       <ul>
-        {jobsList.map((each) => (
-          <li key={each.uniqueId}>
-            {editingId === each.uniqueId ? (
-              <>
-                <input
-                  value={editingText}
-                  onChange={(e) =>
-                    setEditingText(e.target.value)
-                  }
-                />
-                <button
-                  onClick={() => updateJob(each.uniqueId)}
-                >
-                  SAVE
-                </button>
-              </>
-            ) : (
-              <>
-                {each.title}
-                <button onClick={() => startEdit(each)}>
-                  EDIT
-                </button>
-                <button
-                  onClick={() => deleteJob(each.uniqueId)}
-                >
-                  DELETE
-                </button>
-              </>
-            )}
-          </li>
-        ))}
+      {jobsList.map((eachJob)=>(
+        <li key={eachJob.uniqueId}>
+          {editingId === eachJob.uniqueId ? (
+          <>
+          <input value={editingText}
+          onChange = {(event)=>setEditingText(event.target.value)}
+          />
+          <button onClick={()=>updateJob(eachJob.uniqueId)} className="button">SAVE</button>
+          </>
+          ):(
+          <>
+          {eachJob.title}
+          <button onClick = {()=>startEdit(eachJob)} className="button">EDIT</button>
+          <button onClick={() => deleteJob(eachJob.uniqueId)} className="button">Delete</button>
+          </>
+          )}
+        </li>
+      ))}
       </ul>
     </div>
   );
