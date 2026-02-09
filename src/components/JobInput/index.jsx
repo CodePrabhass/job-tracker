@@ -5,10 +5,16 @@ const JobInput = props => {
     }
     return(
         <>
-        <input type="text"
+        <input type="search"
                placeholder="Enter the job titile"
                value={job}
                onChange={onChangeInput}
+               onKeyDown={(event)=>{
+                if(event.key==="Enter" && job.trim()!==" "){
+                    console.log("Enter key is pressed")
+                    addJob()
+                }
+               }}
         />
         <button onClick={addJob}>Add job</button>
         </>

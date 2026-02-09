@@ -4,10 +4,6 @@ import JobItem from "../JobItem";
 const JobList = props =>{
     const {
         jobsList,
-        editingId,
-        editingText,
-        setEditingText,
-        startEdit,
         updateJob,
         deleteJob
     } = props
@@ -18,10 +14,6 @@ const JobList = props =>{
                 <JobItem
                 key={eachJob.uniqueId}
                 job={eachJob}
-                editingId = {editingId}
-                editingText={editingText}
-                setEditingText={setEditingText}
-                startEdit={startEdit}
                 updateJob={updateJob}
                 deleteJob={deleteJob}
                 />
