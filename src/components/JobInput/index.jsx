@@ -5,7 +5,7 @@ const JobInput = props => {
     }
     return(
         <>
-        <input type="search"
+        <input type="text"
                placeholder="Enter the job titile"
                value={job}
                onChange={onChangeInput}

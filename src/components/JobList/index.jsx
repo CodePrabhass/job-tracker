@@ -5,6 +5,7 @@ const JobList = props =>{
     const {
         jobsList,
         updateJob,
+        updateJobStatus,
         deleteJob
     } = props
 
@@ -15,6 +16,7 @@ const JobList = props =>{
                 key={eachJob.uniqueId}
                 job={eachJob}
                 updateJob={updateJob}
+                updateJobStatus={updateJobStatus}
                 deleteJob={deleteJob}
                 />
             ))}

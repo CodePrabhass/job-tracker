@@ -1,7 +1,7 @@
 import { useState,useEffect,useRef} from "react";
 
 const JobItem = props => {
-    const {job,updateJob,deleteJob}=props
+    const {job,updateJob,deleteJob,updateJobStatus}=props
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(job.title);
     const inputRef = useRef(null);
@@ -51,6 +51,15 @@ const JobItem = props => {
         </>
         )}
         <button onClick={()=>deleteJob(job.uniqueId)}>Delete</button>
+        <select
+            value={job.status}
+            onChange={(e) => updateJobStatus(job.uniqueId, e.target.value)}
+            >
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+
         </li>
     )
 }
