@@ -44,3 +44,23 @@
 .button {
   margin:8px;
 }
+
+.rejectButton{
+  background-color:Red;
+}
+
+.appliedButton{
+  background-color:green;
+}
+
+.interviewButton{
+  background-color:blue;
+}
+
+.allButton{
+  background-color:grey;
+}
+.stats{
+  display: flex;
+  justify-content: space-between;
+}

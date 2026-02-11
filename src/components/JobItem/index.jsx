@@ -50,7 +50,13 @@ const JobItem = props => {
             <button onClick={()=>setIsEditing(true)}>Edit</button>
         </>
         )}
-        <button onClick={()=>deleteJob(job.uniqueId)}>Delete</button>
+        <button onClick={()=>
+            {
+            const confirmDelete = window.confirm(`Are you sure you want to delete ${job.title}?`)
+            if(confirmDelete){
+                deleteJob(job.uniqueId)
+             }
+            }}>Delete</button>
         <select
             value={job.status}
             onChange={(e) => updateJobStatus(job.uniqueId, e.target.value)}

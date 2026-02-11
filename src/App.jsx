@@ -2,8 +2,7 @@ import { useState,useEffect } from "react";
 import './App.css'
 import {v4 as uuidv4} from 'uuid';
 import JobInput from "./components/JobInput";
-import JobList from "./components/JobList"
-
+import JobList from "./components/JobList";
 /*
  * A React component that creates a job tracker application
  * Allows users to add and display job titles
@@ -12,8 +11,9 @@ import JobList from "./components/JobList"
  * A React component for a job tracking application
  * Allows adding, editing, deleting, and persisting jobs to localStorage
  */
-const App=()=>{
 
+
+const App=()=>{
   // State for the new job input
   const [job,setJob] = useState(""); 
   // State for the list of jobs, initialized from localStorage
@@ -38,7 +38,7 @@ const App=()=>{
   const addJob = () => {
     if(job.trim() !== ""){
       const newJob={uniqueId:uuidv4(),title:job,status:"Applied"};
-      setJobsList([...jobsList,newJob]);
+      setJobsList(prev=>[newJob,...prev]);
       setJob("");
     }  
   }
@@ -67,35 +67,56 @@ const App=()=>{
     )
     );
   }
+    const getVisibleJobs=()=>{
+      return jobsList.filter(job => 
+        filterStatus === "ALL"? true:job.status === filterStatus
+      )
+      .filter(job=>
+        job.title.toLowerCase().includes(searchText.toLowerCase())
+        )
+    }
 
-  const searchJobs = jobsList.filter(job => {
-    if (filterStatus === "ALL") return true;
-    return job.status === filterStatus;
-  })
-  .filter(job=>
-    job.title.toLowerCase().includes(searchText.toLowerCase())
-    )
-  
+  const clearButton =()=>{
+    setJobsList([]);
+  }
+  // Calculate the number of jobs in each status
+const total = jobsList.length;
+const applied = jobsList.filter(job => job.status === "Applied").length;
+const interview = jobsList.filter(job => job.status === "Interview").length;
+const rejected = jobsList.filter(job => job.status === "Rejected").length;
+
   return (
     <div className="App">
       <h1>JOB TRACKER App</h1>
-      <div style={{ marginBottom: "12px" }}>
-        <button onClick={() => setFilterStatus("ALL")}>All</button>
-        <button onClick={() => setFilterStatus("Applied")}>Applied</button>
-        <button onClick={() => setFilterStatus("Interview")}>Interview</button>
-        <button onClick={() => setFilterStatus("Rejected")}>Rejected</button>
-      
+      <div style={{ margin: "10px"}}>
+        <button className="allButton" onClick={() => setFilterStatus("ALL")}>All</button>
+        <button className="appliedButton" onClick={() => setFilterStatus("Applied")}>Applied</button>
+        <button className="interviewButton" onClick={() => setFilterStatus("Interview")}>Interview</button>
+        <button className="rejectButton" onClick={() => setFilterStatus("Rejected")}>Rejected</button>
       </div>
       <div>
         <input type="search"
           value={searchText} 
-          onChange={(e)=>setSearchText(e.target.value)} 
+          onChange={(event)=>setSearchText(event.target.value)} 
           placeholder="Search jobs" />
       </div>
       <JobInput job={job} setJob={setJob} addJob={addJob} />
+      <hr />
+      <div className="stats">
+        <p>Total: {total}</p>
+        <p>Applied: {applied}</p>
+        <p>Interview: {interview}</p>
+        <p>Rejected: {rejected}</p>
+      </div>
+      <button className="clearButton" onClick={()=>{
+        const confirmClear = window.confirm("Are you sure you want to clear all jobs?");
+        if(confirmClear){
+          {clearButton}
+        }
+      }} disabled={jobsList.length===0}>Clear All</button>
 
       <JobList
-        jobsList={searchJobs}
+        jobsList={getVisibleJobs()}
         updateJob={updateJob}
         updateJobStatus={updateJobStatus}
         deleteJob={deleteJob}

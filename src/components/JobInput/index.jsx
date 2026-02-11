@@ -16,7 +16,7 @@ const JobInput = props => {
                 }
                }}
         />
-        <button onClick={addJob}>Add job</button>
+        <button onClick={addJob} disabled={job.trim()===""}>Add job</button>
         </>
     )
 }

@@ -11,6 +11,7 @@ const JobList = props =>{
 
     return(
         <ul>
+            {jobsList.length === 0 && <p>No Jobs Found</p>}
             {jobsList.map((eachJob)=>(
                 <JobItem
                 key={eachJob.uniqueId}
