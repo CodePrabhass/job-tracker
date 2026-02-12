@@ -41,8 +41,12 @@
   color: #888;
 }
 
-.button {
-  margin:8px;
+button {
+  margin:10px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .rejectButton{

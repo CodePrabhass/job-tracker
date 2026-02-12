@@ -1,13 +1,11 @@
 
 import JobItem from "../JobItem";
 
-const JobList = props =>{
-    const {
-        jobsList,
-        updateJob,
-        updateJobStatus,
-        deleteJob
-    } = props
+const JobList = ({jobsList,
+    updateJob,
+    updateJobStatus,
+    deleteJob}) => {
+    
 
     return(
         <ul>

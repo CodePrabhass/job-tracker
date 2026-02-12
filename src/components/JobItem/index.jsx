@@ -1,6 +1,8 @@
 import { useState,useEffect,useRef} from "react";
+import React from "react";
+import { STATUSES } from "../constants";
 
-const JobItem = props => {
+const JobItem = React.memo((props) => {
     const {job,updateJob,deleteJob,updateJobStatus}=props
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(job.title);
@@ -14,7 +16,7 @@ const JobItem = props => {
         if(isEditing){
         inputRef.current.focus();
         }
-    },[isEditing])
+      },[isEditing])
 
     return (
         <li>
@@ -59,14 +61,15 @@ const JobItem = props => {
             }}>Delete</button>
         <select
             value={job.status}
-            onChange={(e) => updateJobStatus(job.uniqueId, e.target.value)}
+            onChange={(event) => updateJobStatus(job.uniqueId, event.target.value)}
             >
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Rejected">Rejected</option>
+                {STATUSES.map((status)=>(
+                    <option key={status} value={status}>{status}</option>
+                ))}
         </select>
 
         </li>
     )
-}
+    
+})
 export default JobItem;

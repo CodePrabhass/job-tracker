@@ -3,6 +3,8 @@ import './App.css'
 import {v4 as uuidv4} from 'uuid';
 import JobInput from "./components/JobInput";
 import JobList from "./components/JobList";
+import Stats from "./components/Stats";
+import {STATUSES} from "./constants"
 /*
  * A React component that creates a job tracker application
  * Allows users to add and display job titles
@@ -37,7 +39,7 @@ const App=()=>{
   // Function to add a new job to the list
   const addJob = () => {
     if(job.trim() !== ""){
-      const newJob={uniqueId:uuidv4(),title:job,status:"Applied"};
+      const newJob={uniqueId:uuidv4(),title:job,status:STATUSES[0]};
       setJobsList(prev=>[newJob,...prev]);
       setJob("");
     }  
@@ -67,23 +69,22 @@ const App=()=>{
     )
     );
   }
-    const getVisibleJobs=()=>{
-      return jobsList.filter(job => 
-        filterStatus === "ALL"? true:job.status === filterStatus
-      )
-      .filter(job=>
-        job.title.toLowerCase().includes(searchText.toLowerCase())
-        )
+
+  const getVisibleJobs=()=>{
+    return jobsList.filter(job => {
+          const matchesStatus =
+            filterStatus === "ALL" || job.status === filterStatus
+        
+          const matchesSearch =
+            job.title.toLowerCase().includes(searchText.toLowerCase())
+        
+          return matchesStatus && matchesSearch
+       })
     }
 
   const clearButton =()=>{
     setJobsList([]);
   }
-  // Calculate the number of jobs in each status
-const total = jobsList.length;
-const applied = jobsList.filter(job => job.status === "Applied").length;
-const interview = jobsList.filter(job => job.status === "Interview").length;
-const rejected = jobsList.filter(job => job.status === "Rejected").length;
 
   return (
     <div className="App">
@@ -102,12 +103,7 @@ const rejected = jobsList.filter(job => job.status === "Rejected").length;
       </div>
       <JobInput job={job} setJob={setJob} addJob={addJob} />
       <hr />
-      <div className="stats">
-        <p>Total: {total}</p>
-        <p>Applied: {applied}</p>
-        <p>Interview: {interview}</p>
-        <p>Rejected: {rejected}</p>
-      </div>
+      <Stats jobList={jobsList}/>
       <button className="clearButton" onClick={()=>{
         const confirmClear = window.confirm("Are you sure you want to clear all jobs?");
         if(confirmClear){
