@@ -1,9 +1,10 @@
 import { useState,useEffect,useRef} from "react";
-import React from "react";
-import { STATUSES } from "../constants";
+import {memo} from "react";
+import { STATUSES } from "../../constants";
 
-const JobItem = React.memo((props) => {
+const JobItem =memo((props) => {
     const {job,updateJob,deleteJob,updateJobStatus}=props
+    console.log("JobItem Rendered:", job.title);
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(job.title);
     const inputRef = useRef(null);
@@ -62,10 +63,10 @@ const JobItem = React.memo((props) => {
         <select
             value={job.status}
             onChange={(event) => updateJobStatus(job.uniqueId, event.target.value)}
-            >
-                {STATUSES.map((status)=>(
-                    <option key={status} value={status}>{status}</option>
-                ))}
+        >
+            {STATUSES.map((status)=>(
+                <option key={status} value={status}>{status}</option>
+            ))}
         </select>
 
         </li>

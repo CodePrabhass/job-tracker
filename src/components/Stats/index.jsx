@@ -1,4 +1,4 @@
-import { STATUSES } from "../constants";
+import { STATUSES } from "../../constants";
 
 const Stats = ({ jobList }) => {
 
@@ -11,9 +11,9 @@ const Stats = ({ jobList }) => {
 
     return accumulator;
   },
-  STATUSES.reduce((acc, status) => {
-    acc[status] = 0;
-    return acc;
+  STATUSES.reduce((accumulator, status) => {
+    accumulator[status] = 0;
+    return accumulator;
   }, { total: 0 })
   );
 

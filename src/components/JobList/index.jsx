@@ -1,6 +1,7 @@
 
 import JobItem from "../JobItem";
 
+
 const JobList = ({jobsList,
     updateJob,
     updateJobStatus,
