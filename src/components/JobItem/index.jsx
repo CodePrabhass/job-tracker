@@ -50,9 +50,12 @@ const JobItem =memo((props) => {
             </>
         ):(<>
             <span>{job.title}</span>
-            <button onClick={()=>setIsEditing(true)}>Edit</button>
+            {job.company && (
+                 <p><strong>Company:</strong> {job.company}</p>
+            )}
         </>
         )}
+        <button onClick={()=>setIsEditing(true)}>Edit</button>
         <button onClick={()=>
             {
             const confirmDelete = window.confirm(`Are you sure you want to delete ${job.title}?`)
